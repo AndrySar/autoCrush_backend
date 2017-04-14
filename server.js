@@ -3,6 +3,7 @@ var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var config = require('./config/config');
+var multer = require('multer');
 
 var app = express();
 
@@ -20,10 +21,13 @@ app.use(bodyParser.json({ type: 'application/json'}));
 
 app.all('/*', function(req, res, next) {
   // CORS headers
-  res.header("Access-Control-Allow-Origin", "*"); // restrict it to the required domain
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // restrict it to the required domain
+
+    res.header("Access-Control-Allow-Credentials", "true");
+
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   // Set custom headers for CORS
-  res.header('Access-Control-Allow-Headers', 'Content-type,Accept');
+  res.header('Access-Control-Allow-Headers', 'Content-type,Accept, x-access-token, x-key');
   // If someone calls with method OPTIONS, let's display the allowed methods on our API
   if (req.method == 'OPTIONS') {
     res.status(200);
@@ -33,6 +37,7 @@ app.all('/*', function(req, res, next) {
     next();
   }
 });
+
 
 // start db
 db.on('error', console.error);

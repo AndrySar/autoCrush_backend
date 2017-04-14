@@ -4,12 +4,21 @@ var router = express.Router();
 var auth = require('../auth/auth');
 var beer = require('../dao/beers');
 var user = require('../dao/users');
+var image = require('../dao/image');
+var post = require('../dao/post');
 
 
 /*
  * Login, accessible by anyone, you can find the logic for login function in auth/validate.js
  */
 router.post('/login', auth.login);
+
+
+/*
+ * Upload file
+ */
+
+router.post('/upload', image.upload, [require('../auth/validate')]);
 
 /*
  * Routes for beers
@@ -30,5 +39,13 @@ router.get('/user/:id', user.getOne, [require('../auth/validate')]);
 router.post('/user', user.creat);
 router.put('/user/:id', user.update, [require('../auth/validate')]);
 router.delete('/user/:id', user.delete, [require('../auth/validate')]);
+
+
+/*
+ *
+ */
+router.get('/post', post.getAll, [require('../auth/validate')]);
+router.post('/post', post.creat, [require('../auth/validate')]);
+
 
 module.exports = router;
